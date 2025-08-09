@@ -1,7 +1,7 @@
 from app.pipelines.utils.pipelineManager import PipelineManager
 
 
-def defend_point(claim: str,
+def generate_argumentation(claim: str,
                  context: str = None,
                  manager: PipelineManager = None,
                  n_arguments: int = 3,
@@ -22,3 +22,5 @@ def defend_point(claim: str,
         out[0].get('generated_text') if isinstance(out[0], dict) else str(out))
 
     return text.strip()
+
+

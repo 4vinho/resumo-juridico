@@ -13,7 +13,7 @@ class PipelineManager:
             "summarization": "sshleifer/distilbart-cnn-12-6",
             "argumentation": "google/flan-t5-base",
             "story_points": "sshleifer/distilbart-cnn-12-6",
-            "translation": "Helsinki-NLP/opus-mt-mul-en",
+            "translation": "facebook/nllb-200-distilled-600M", # NLLB model for multilingual translation
         }
         self._pipes = {}
         self._tokenizers = {}
@@ -27,14 +27,18 @@ class PipelineManager:
     def get_pipeline(self, task_name: str):
         if task_name in self._pipes:
             return self._pipes[task_name]
+        
         model_name = self.models[task_name]
 
-        if task_name == "summarization":
+        if task_name == "translation":
+            p = pipeline("translation", model=model_name, device=self.device)
+        elif task_name == "summarization":
             p = pipeline("summarization", model=model_name, device=self.device)
         else:
             try:
                 p = pipeline("text2text-generation", model=model_name, device=self.device)
             except Exception:
                 p = pipeline("text-generation", model=model_name, device=self.device)
+        
         self._pipes[task_name] = p
         return p
