@@ -6,7 +6,8 @@ router = APIRouter()
 
 class InputText(BaseModel):
     texto: str
-    outLanguage :str
+    outLanguage: str
+    targetLanguage: str = "en" # Default to English
 
 @router.post("/processar")
 def processar_texto(input_data: InputText):
