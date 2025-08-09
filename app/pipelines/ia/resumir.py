@@ -4,13 +4,13 @@ from typing import List
 from app.pipelines.utils.pipelineManager import PipelineManager
 from app.pipelines.utils.tokens import chunk_text_by_tokens
 
+
 def summarize_text(text: str,
                    manager: PipelineManager,
                    max_length: int = 150,
                    min_length: int = 40,
                    chunk_overlap: int = 64,
                    final_compress: bool = True) -> str:
-
     pipe = manager.get_pipeline("summarization")
     tokenizer = manager.get_tokenizer("summarization")
     model_max = getattr(tokenizer, "model_max_length", 1024)
@@ -21,12 +21,10 @@ def summarize_text(text: str,
     for c in chunks:
         try:
             out = pipe(c, max_length=max_length, min_length=min_length, truncation=True)
-            # pipeline retorna lista de dicts em geral
             txt = out[0]['summary_text'] if isinstance(out, list) and isinstance(out[0], dict) else str(out)
             summaries.append(txt.strip())
         except Exception as e:
-            # fallback: truncar e tentar de novo
-            truncated = c[:model_max * 4]  # fallback simples
+            truncated = c[:model_max * 4]
             out = pipe(truncated, max_length=max_length, min_length=min_length, truncation=True)
             summaries.append(out[0]['summary_text'])
 
