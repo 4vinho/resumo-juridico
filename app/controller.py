@@ -6,7 +6,7 @@ router = APIRouter()
 
 class InputText(BaseModel):
     texto: str
-    outLanguage: str
+    language: str
 
 @router.post("/processar")
 def processar_texto(input_data: InputText):
@@ -14,4 +14,4 @@ def processar_texto(input_data: InputText):
         return {"erro": "Texto vazio fornecido."}
 
     result = analise(input_data)
-    return {result}
+    return result

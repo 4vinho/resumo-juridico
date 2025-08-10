@@ -52,7 +52,7 @@ Para usar a API, envie uma requisição POST para o endpoint `/processar` com o 
 ```json
 {
   "texto": "O seu texto jurídico aqui.",
-  "outLanguage": "pt"
+  "language": "pt"
 }
 ```
 
